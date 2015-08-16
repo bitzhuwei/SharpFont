@@ -6,15 +6,43 @@ namespace SharpFont {
     struct FUnit {
         int value;
 
-        public static explicit operator int (FUnit v) => v.value;
-        public static explicit operator FUnit (int v) => new FUnit { value = v };
+        //public static explicit operator int (FUnit v) => v.value;
+        public static explicit operator int (FUnit v) 
+        {
+            return v.value;
+        }
+        //public static explicit operator FUnit (int v) => new FUnit { value = v };
+        public static explicit operator FUnit (int v) 
+        {
+            return new FUnit { value = v };
+        }
 
-        public static FUnit operator -(FUnit lhs, FUnit rhs) => (FUnit)(lhs.value - rhs.value);
-        public static FUnit operator +(FUnit lhs, FUnit rhs) => (FUnit)(lhs.value + rhs.value);
-        public static float operator *(FUnit lhs, float rhs) => lhs.value * rhs;
+        //public static FUnit operator -(FUnit lhs, FUnit rhs) => (FUnit)(lhs.value - rhs.value);
+        public static FUnit operator -(FUnit lhs, FUnit rhs) 
+        {
+            return (FUnit)(lhs.value - rhs.value);
+        }
+        //public static FUnit operator +(FUnit lhs, FUnit rhs) => (FUnit)(lhs.value + rhs.value);
+        public static FUnit operator +(FUnit lhs, FUnit rhs) 
+        {
+            return (FUnit)(lhs.value + rhs.value);
+        }
+        //public static float operator *(FUnit lhs, float rhs) => lhs.value * rhs;
+        public static float operator *(FUnit lhs, float rhs) 
+        {
+            return lhs.value * rhs;
+        }
 
-        public static FUnit Max (FUnit a, FUnit b) => (FUnit)Math.Max(a.value, b.value);
-        public static FUnit Min (FUnit a, FUnit b) => (FUnit)Math.Min(a.value, b.value);
+        //public static FUnit Max (FUnit a, FUnit b) => (FUnit)Math.Max(a.value, b.value);
+        public static FUnit Max (FUnit a, FUnit b) 
+        {
+            return (FUnit)Math.Max(a.value, b.value);
+        }
+        //public static FUnit Min (FUnit a, FUnit b) => (FUnit)Math.Min(a.value, b.value);
+        public static FUnit Min (FUnit a, FUnit b) 
+        {
+            return (FUnit)Math.Min(a.value, b.value);
+        }
     }
 
     struct Point {
@@ -28,9 +56,17 @@ namespace SharpFont {
             Type = PointType.OnCurve;
         }
 
-        public static PointF operator *(Point lhs, float rhs) => new PointF(new Vector2(lhs.X * rhs, lhs.Y * rhs), lhs.Type);
+        //public static PointF operator *(Point lhs, float rhs) => new PointF(new Vector2(lhs.X * rhs, lhs.Y * rhs), lhs.Type);
+        public static PointF operator *(Point lhs, float rhs)
+        {
+            return new PointF(new Vector2(lhs.X * rhs, lhs.Y * rhs), lhs.Type);
+        }
 
-        public static explicit operator Vector2 (Point p) => new Vector2((int)p.X, (int)p.Y);
+        //public static explicit operator Vector2 (Point p) => new Vector2((int)p.X, (int)p.Y);
+        public static explicit operator Vector2(Point p)
+        {
+            return new Vector2((int)p.X, (int)p.Y);
+        }
     }
 
     struct PointF {
@@ -42,11 +78,23 @@ namespace SharpFont {
             Type = type;
         }
 
-        public PointF Offset (Vector2 offset) => new PointF(P + offset, Type);
+        //public PointF Offset (Vector2 offset) => new PointF(P + offset, Type);
+        public PointF Offset (Vector2 offset) 
+        {
+            return new PointF(P + offset, Type);
+        }
 
-        public override string ToString () => $"{P} ({Type})";
+        //public override string ToString () => $"{P} ({Type})";
+        public override string ToString () 
+        {
+            return string.Format("{0} ({1})", this.P,this.Type);
+        }
 
-        public static implicit operator Vector2 (PointF p) => p.P;
+        //public static implicit operator Vector2 (PointF p) => p.P;
+        public static implicit operator Vector2(PointF p)
+        {
+            return p.P;
+        }
     }
 
     enum PointType {

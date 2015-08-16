@@ -78,7 +78,11 @@ namespace GpuExample {
         class EventQueue {
             ConcurrentQueue<Event> queue = new ConcurrentQueue<Event>();
 
-            public void Post (Event ev) => queue.Enqueue(ev);
+            //public void Post (Event ev) => queue.Enqueue(ev);
+            public void Post(Event ev)
+            {
+                queue.Enqueue(ev);
+            }
 
             public Event Poll () {
                 Event ev;

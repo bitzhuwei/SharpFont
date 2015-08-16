@@ -39,6 +39,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\external\System.Numerics.Vectors\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Internal\BinPacker.cs" />

@@ -12,7 +12,14 @@ namespace SharpFont {
         int readOffset;
         int writeOffset;
 
-        public uint Position => (uint)(stream.Position - (writeOffset - readOffset));
+        //public uint Position => (uint)(stream.Position - (writeOffset - readOffset));
+        public uint Position
+        {
+            get
+            {
+                return (uint)(stream.Position - (writeOffset - readOffset));
+            }
+        }
 
         public DataReader (Stream stream, int maxReadLength = 4096) {
             this.stream = stream;
@@ -28,16 +35,56 @@ namespace SharpFont {
                 handle.Free();
         }
 
-        public byte ReadByte () => *Read(1);
-        public sbyte ReadSByte () => *(sbyte*)Read(1);
-        public short ReadInt16 () => *(short*)Read(sizeof(short));
-        public int ReadInt32 () => *(int*)Read(sizeof(int));
-        public ushort ReadUInt16 () => *(ushort*)Read(sizeof(ushort));
-        public uint ReadUInt32 () => *(uint*)Read(sizeof(uint));
-        public short ReadInt16BE () => (short)htons(ReadUInt16());
-        public int ReadInt32BE () => (int)htonl(ReadUInt32());
-        public ushort ReadUInt16BE () => htons(ReadUInt16());
-        public uint ReadUInt32BE () => htonl(ReadUInt32());
+        //public byte ReadByte () => *Read(1);
+        public byte ReadByte()
+        {
+            return *Read(1);
+        }
+        //public sbyte ReadSByte () => *(sbyte*)Read(1);
+        public sbyte ReadSByte()
+        {
+            return *(sbyte*)Read(1);
+        }
+        //public short ReadInt16 () => *(short*)Read(sizeof(short));
+        public short ReadInt16()
+        {
+            return *(short*)Read(sizeof(short));
+        }
+        //public int ReadInt32 () => *(int*)Read(sizeof(int));
+        public int ReadInt32()
+        {
+            return *(int*)Read(sizeof(int));
+        }
+        //public ushort ReadUInt16 () => *(ushort*)Read(sizeof(ushort));
+        public ushort ReadUInt16()
+        {
+            return *(ushort*)Read(sizeof(ushort));
+        }
+        //public uint ReadUInt32 () => *(uint*)Read(sizeof(uint));
+        public uint ReadUInt32()
+        {
+            return *(uint*)Read(sizeof(uint));
+        }
+        //public short ReadInt16BE () => (short)htons(ReadUInt16());
+        public short ReadInt16BE()
+        {
+            return (short)htons(ReadUInt16());
+        }
+        //public int ReadInt32BE () => (int)htonl(ReadUInt32());
+        public int ReadInt32BE()
+        {
+            return (int)htonl(ReadUInt32());
+        }
+        //public ushort ReadUInt16BE () => htons(ReadUInt16());
+        public ushort ReadUInt16BE()
+        {
+            return htons(ReadUInt16());
+        }
+        //public uint ReadUInt32BE () => htonl(ReadUInt32());
+        public uint ReadUInt32BE()
+        {
+            return htonl(ReadUInt32());
+        }
 
         public byte[] ReadBytes (int count) {
             var result = new byte[count];
