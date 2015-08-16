@@ -6,6 +6,8 @@ using System.Text;
 
 namespace SharpFont
 {
+    // http://blog.fontlab.com/info/sfnt/
+    // https://en.wikipedia.org/wiki/SFNT
     // raw SFNT container table reading routines
     unsafe static class SfntTables
     {
