@@ -2,8 +2,10 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace SharpFont {
-    unsafe sealed class DataReader : IDisposable {
+namespace SharpFont
+{
+    unsafe sealed class DataReader : IDisposable
+    {
         readonly Stream stream;
         readonly byte[] buffer;
         readonly GCHandle handle;
@@ -21,7 +23,8 @@ namespace SharpFont {
             }
         }
 
-        public DataReader (Stream stream, int maxReadLength = 4096) {
+        public DataReader(Stream stream, int maxReadLength = 4096)
+        {
             this.stream = stream;
             this.maxReadLength = maxReadLength;
 
@@ -30,7 +33,8 @@ namespace SharpFont {
             start = (byte*)handle.AddrOfPinnedObject();
         }
 
-        public void Dispose () {
+        public void Dispose()
+        {
             if (handle.IsAllocated)
                 handle.Free();
         }
@@ -86,10 +90,12 @@ namespace SharpFont {
             return htonl(ReadUInt32());
         }
 
-        public byte[] ReadBytes (int count) {
+        public byte[] ReadBytes(int count)
+        {
             var result = new byte[count];
             int index = 0;
-            while (count > 0) {
+            while (count > 0)
+            {
                 var readCount = Math.Min(count, maxReadLength);
                 Marshal.Copy(new IntPtr(Read(readCount)), result, index, readCount);
 
@@ -99,26 +105,31 @@ namespace SharpFont {
             return result;
         }
 
-        public void Seek (uint position) {
+        public void Seek(uint position)
+        {
             // if the position is within our buffer we can reuse part of it
             // otherwise, just clear everything out and jump to the right spot
             var current = stream.Position;
-            if (position < current - writeOffset || position >= current) {
+            if (position < current - writeOffset || position >= current)
+            {
                 readOffset = 0;
                 writeOffset = 0;
                 stream.Position = position;
             }
-            else {
+            else
+            {
                 readOffset = (int)(position - current + writeOffset);
                 CheckWrapAround(0);
             }
         }
 
-        public void Skip (int count) {
+        public void Skip(int count)
+        {
             readOffset += count;
             if (readOffset < writeOffset)
                 CheckWrapAround(0);
-            else {
+            else
+            {
                 // we've skipped everything in our buffer; clear it out
                 // and then skip any remaining data by seeking the stream
                 var seekCount = readOffset - writeOffset;
@@ -130,19 +141,22 @@ namespace SharpFont {
             }
         }
 
-        byte* Read (int count) {
+        byte* Read(int count)
+        {
             // we'll be returning a pointer to a contiguous block of memory
             // at least count bytes large, starting at the current offset
             var result = start + readOffset;
             readOffset += count;
 
-            if (readOffset >= writeOffset) {
+            if (readOffset >= writeOffset)
+            {
                 if (count > maxReadLength)
                     throw new InvalidOperationException("Tried to read more data than the max read length.");
 
                 // we need to read at least this many bytes, but we'll try for more (could be zero)
                 var need = readOffset - writeOffset;
-                while (need > 0) {
+                while (need > 0)
+                {
                     // try to read in a chunk of maxReadLength bytes (unless that would push past the end of our space)
                     int read = stream.Read(buffer, writeOffset, Math.Min(maxReadLength, buffer.Length - writeOffset));
                     if (read <= 0)
@@ -161,11 +175,13 @@ namespace SharpFont {
             return result;
         }
 
-        bool CheckWrapAround (int dataCount) {
+        bool CheckWrapAround(int dataCount)
+        {
             // if we've gone past the max read length, we can no longer ensure
             // that future read calls of maxReadLength size will be able to get a
             // contiguous buffer, so wrap back to the beginning
-            if (readOffset >= maxReadLength) {
+            if (readOffset >= maxReadLength)
+            {
                 // back copy any buffered data so that it doesn't get lost
                 var copyCount = writeOffset - readOffset + dataCount;
                 if (copyCount > 0)
@@ -179,7 +195,8 @@ namespace SharpFont {
             return false;
         }
 
-        static uint htonl (uint value) {
+        static uint htonl(uint value)
+        {
             // this branch is constant at JIT time and will be optimized out
             if (!BitConverter.IsLittleEndian)
                 return value;
@@ -188,7 +205,8 @@ namespace SharpFont {
             return (uint)(ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3]);
         }
 
-        static ushort htons (ushort value) {
+        static ushort htons(ushort value)
+        {
             // this branch is constant at JIT time and will be optimized out
             if (!BitConverter.IsLittleEndian)
                 return value;
