@@ -672,7 +672,7 @@ namespace SharpFont
         //public override string ToString () => Tag.ToString();
         public override string ToString()
         {
-            return Tag.ToString();
+            return string.Format("{0}", Tag);
         }
     }
 

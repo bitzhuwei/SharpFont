@@ -30,7 +30,7 @@ namespace SharpFont
         //public override string ToString () => $"{X}, {Y}, {Width}, {Height}";
         public override string ToString()
         {
-            return string.Format("{X}, {Y}, {Width}, {Height}", this.X, this.Y, this.Width, this.Height);
+            return string.Format("{0}, {1}, {2}, {3}", this.X, this.Y, this.Width, this.Height);
         }
     }
 
