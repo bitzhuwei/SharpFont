@@ -14,20 +14,23 @@ namespace Test
 
         static void Main(string[] args)
         {
-            var typeface = LoadTypeface("../../../Fonts/OpenSans-Regular.ttf");
-
-            for (int c = 0; c <= char.MaxValue; c++)
+            using (var file = File.OpenRead("../../../Fonts/OpenSans-Regular.ttf"))
             {
-                var comparisonFile = Path.Combine(ComparisonPath, c + ".png");
-                Surface surface = RenderGlyph(typeface, (char)c);
-                SaveSurface(surface, comparisonFile);
-                //CompareRender(typeface, (char)c, comparisonFile);
-            }
+                var typeface = new FontFace(file);
 
-            //{
-            //    var surface = RenderGlyph(typeface, 'B');
-            //    SaveSurface(surface, "result.png");
-            //}
+                for (int c = 0; c <= char.MaxValue; c++)
+                {
+                    var comparisonFile = Path.Combine(ComparisonPath, c + ".png");
+                    Surface surface = RenderGlyph(typeface, (char)c);
+                    SaveSurface(surface, comparisonFile);
+                    //CompareRender(typeface, (char)c, comparisonFile);
+                }
+
+                //{
+                //    var surface = RenderGlyph(typeface, 'B');
+                //    SaveSurface(surface, "result.png");
+                //}
+            }
         }
 
         static void CompareRender(FontFace typeface, char c, string comparisonFile)
@@ -112,10 +115,5 @@ namespace Test
             }
         }
 
-        static FontFace LoadTypeface(string fileName)
-        {
-            using (var file = File.OpenRead(fileName))
-                return new FontFace(file);
-        }
     }
 }
