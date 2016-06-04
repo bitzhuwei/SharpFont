@@ -24,7 +24,7 @@ namespace Test
                 {
                     Console.WriteLine("Dump {0}: {1}", c, (char)c);
                     string comparisonFile = Path.Combine(ComparisonPath, (int)c + ".png");
-                    Surface surface ;
+                    Surface surface;
                     if (RenderGlyph(typeface, (char)c, 32, out surface))
                     {
                         SaveSurface(surface, comparisonFile);
@@ -45,7 +45,7 @@ namespace Test
             bool result = false;
 
             Glyph glyph = typeface.GetGlyph(c, pixelSize);
-            if (glyph != null)
+            if (glyph != null && glyph.RenderWidth > 0 && glyph.RenderHeight > 0)
             {
                 surface = new Surface
                 {
