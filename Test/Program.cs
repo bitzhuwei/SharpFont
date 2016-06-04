@@ -17,21 +17,32 @@ namespace Test
             using (FileStream file = File.OpenRead("../../../Fonts/OpenSans-Regular.ttf"))
             {
                 var typeface = new FontFace(file);
+                long totalLength = 0;
+                int average = 0;
 
                 for (int c = 0; c <= char.MaxValue; c++)
                 {
                     Console.WriteLine("Dump {0}: {1}", c, (char)c);
-                    string comparisonFile = Path.Combine(ComparisonPath, c + ".png");
-                    Surface surface = RenderGlyph(typeface, (char)c, 32);
-                    SaveSurface(surface, comparisonFile);
-                    surface.Dispose();
+                    string comparisonFile = Path.Combine(ComparisonPath, (int)c + ".png");
+                    Surface surface ;
+                    if (RenderGlyph(typeface, (char)c, 32, out surface))
+                    {
+                        SaveSurface(surface, comparisonFile);
+                        totalLength += surface.Width;
+                        surface.Dispose();
+                    }
                 }
+
+                Console.WriteLine("Total width: {0}", totalLength);
             }
+
+            Console.Read();
+
         }
 
-        static unsafe Surface RenderGlyph(FontFace typeface, char c, float pixelSize)
+        private static unsafe bool RenderGlyph(FontFace typeface, char c, float pixelSize, out Surface surface)
         {
-            Surface surface;
+            bool result = false;
 
             Glyph glyph = typeface.GetGlyph(c, pixelSize);
             if (glyph != null)
@@ -49,13 +60,15 @@ namespace Test
                     *stuff++ = 0;
 
                 glyph.RenderTo(surface);
+
+                result = true;
             }
             else
             {
                 surface = new Surface();
             }
 
-            return surface;
+            return result;
         }
 
         static unsafe void SaveSurface(Surface surface, string fileName)
