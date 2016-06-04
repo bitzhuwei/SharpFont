@@ -22,17 +22,17 @@ namespace Test
                 {
                     Console.WriteLine("Dump {0}: {1}", c, (char)c);
                     var comparisonFile = Path.Combine(ComparisonPath, c + ".png");
-                    Surface surface = RenderGlyph(typeface, (char)c);
+                    Surface surface = RenderGlyph(typeface, (char)c, 32);
                     SaveSurface(surface, comparisonFile);
                 }
             }
         }
 
-        static unsafe Surface RenderGlyph(FontFace typeface, char c)
+        static unsafe Surface RenderGlyph(FontFace typeface, char c, float pixelSize)
         {
             Surface surface = new Surface();
 
-            var glyph = typeface.GetGlyph(c, 32);
+            var glyph = typeface.GetGlyph(c, pixelSize);
             if (glyph != null)
             {
                 surface = new Surface
