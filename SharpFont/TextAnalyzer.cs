@@ -95,7 +95,7 @@ namespace SharpFont
                 CachedGlyph glyph;
                 if (!cachedFace.Glyphs.TryGetValue(codePoint, out glyph) && !char.IsControl(c))
                 {
-                    var data = font.GetGlyph(codePoint, size);
+                    Glyph data = font.GetGlyph(codePoint, size);
                     var width = data.RenderWidth;
                     var height = data.RenderHeight;
                     if (width > atlas.Width || height > atlas.Height)

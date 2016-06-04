@@ -37,7 +37,7 @@ namespace GpuExample {
             };
 
             analyzer.AppendText(text, format);
-            analyzer.PerformLayout(32, 64, 1000, 1000, layout);
+            analyzer.PerformLayout(0, 32, 1000, 1000, layout);
 
             var memBlock = new MemoryBlock(text.Length * 6 * PosColorTexture.Layout.Stride);
             var mem = (PosColorTexture*)memBlock.Data;
