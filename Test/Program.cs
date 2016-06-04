@@ -20,47 +20,12 @@ namespace Test
 
                 for (int c = 0; c <= char.MaxValue; c++)
                 {
+                    Console.WriteLine("Dump {0}: {1}", c, (char)c);
                     var comparisonFile = Path.Combine(ComparisonPath, c + ".png");
                     Surface surface = RenderGlyph(typeface, (char)c);
                     SaveSurface(surface, comparisonFile);
-                    //CompareRender(typeface, (char)c, comparisonFile);
-                }
-
-                //{
-                //    var surface = RenderGlyph(typeface, 'B');
-                //    SaveSurface(surface, "result.png");
-                //}
-            }
-        }
-
-        static void CompareRender(FontFace typeface, char c, string comparisonFile)
-        {
-            var surface = RenderGlyph(typeface, c);
-
-            // compare against FreeType renders
-            var compare = (Bitmap)Image.FromFile(comparisonFile);
-            if (compare.Width != surface.Width || compare.Height != surface.Height)
-                throw new Exception();
-
-            var bitmapData = compare.LockBits(new Rectangle(0, 0, surface.Width, surface.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            for (int y = 0; y < surface.Height; y++)
-            {
-                var dest = (byte*)bitmapData.Scan0 + y * bitmapData.Stride;
-                var src = (byte*)surface.Bits + y * surface.Pitch;
-
-                for (int x = 0; x < surface.Width; x++)
-                {
-                    var a = *src++;
-                    var b = *dest;
-                    if (Math.Abs(a - b) > 12)
-                        throw new Exception();
-                    dest += 3;
                 }
             }
-
-            compare.UnlockBits(bitmapData);
-            compare.Dispose();
-            Marshal.FreeHGlobal(surface.Bits);
         }
 
         static Surface RenderGlyph(FontFace typeface, char c)
