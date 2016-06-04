@@ -33,7 +33,7 @@ namespace GpuExample {
             var layout = new TextLayout();
             var format = new TextFormat {
                 Font = font,
-                Size = 8.0f
+                Size = 32.0f
             };
 
             analyzer.AppendText(text, format);
