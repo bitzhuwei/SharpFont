@@ -14,14 +14,14 @@ namespace Test
 
         static void Main(string[] args)
         {
-            using (var file = File.OpenRead("../../../Fonts/OpenSans-Regular.ttf"))
+            using (FileStream file = File.OpenRead("../../../Fonts/OpenSans-Regular.ttf"))
             {
                 var typeface = new FontFace(file);
 
                 for (int c = 0; c <= char.MaxValue; c++)
                 {
                     Console.WriteLine("Dump {0}: {1}", c, (char)c);
-                    var comparisonFile = Path.Combine(ComparisonPath, c + ".png");
+                    string comparisonFile = Path.Combine(ComparisonPath, c + ".png");
                     Surface surface = RenderGlyph(typeface, (char)c, 32);
                     SaveSurface(surface, comparisonFile);
                 }
@@ -30,9 +30,9 @@ namespace Test
 
         static unsafe Surface RenderGlyph(FontFace typeface, char c, float pixelSize)
         {
-            Surface surface = new Surface();
+            Surface surface;
 
-            var glyph = typeface.GetGlyph(c, pixelSize);
+            Glyph glyph = typeface.GetGlyph(c, pixelSize);
             if (glyph != null)
             {
                 surface = new Surface
@@ -48,6 +48,10 @@ namespace Test
                     *stuff++ = 0;
 
                 glyph.RenderTo(surface);
+            }
+            else
+            {
+                surface = new Surface();
             }
 
             return surface;
