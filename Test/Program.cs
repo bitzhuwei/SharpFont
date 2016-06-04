@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace Test
 {
-    unsafe class Program
+    class Program
     {
         const string ComparisonPath = "../../../../font_rasters/";
 
@@ -28,7 +28,7 @@ namespace Test
             }
         }
 
-        static Surface RenderGlyph(FontFace typeface, char c)
+        static unsafe Surface RenderGlyph(FontFace typeface, char c)
         {
             Surface surface = new Surface();
 
@@ -53,7 +53,7 @@ namespace Test
             return surface;
         }
 
-        static void SaveSurface(Surface surface, string fileName)
+        static unsafe void SaveSurface(Surface surface, string fileName)
         {
             if (surface.Width > 0 && surface.Height > 0)
             {
