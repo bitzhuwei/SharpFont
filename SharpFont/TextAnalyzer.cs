@@ -92,12 +92,12 @@ namespace SharpFont
                     continue;
 
                 // get the glyph data
-                CachedGlyph glyph;
-                if (!cachedFace.Glyphs.TryGetValue(codePoint, out glyph) && !char.IsControl(c))
+                CachedGlyph cachedGlyph;
+                if (!cachedFace.Glyphs.TryGetValue(codePoint, out cachedGlyph) && !char.IsControl(c))
                 {
-                    Glyph data = font.GetGlyph(codePoint, size);
-                    var width = data.RenderWidth;
-                    var height = data.RenderHeight;
+                    Glyph glyph = font.GetGlyph(codePoint, size);
+                    var width = glyph.RenderWidth;
+                    var height = glyph.RenderHeight;
                     if (width > atlas.Width || height > atlas.Height)
                         throw new InvalidOperationException("Glyph is larger than the size of the provided atlas.");
 
@@ -111,7 +111,7 @@ namespace SharpFont
                             memoryBuffer = mem = new MemoryBuffer(memSize);
 
                         mem.Clear(memSize);
-                        data.RenderTo(new Surface
+                        glyph.RenderTo(new Surface
                         {
                             Bits = mem.Pointer,
                             Width = width,
@@ -133,8 +133,8 @@ namespace SharpFont
                         atlas.Insert(currentPage, rect.X, rect.Y, rect.Width, rect.Height, mem.Pointer);
                     }
 
-                    glyph = new CachedGlyph(rect, data.HorizontalMetrics.Bearing, data.HorizontalMetrics.Advance);
-                    cachedFace.Glyphs.Add(codePoint, glyph);
+                    cachedGlyph = new CachedGlyph(rect, glyph.HorizontalMetrics.Bearing, glyph.HorizontalMetrics.Advance);
+                    cachedFace.Glyphs.Add(codePoint, cachedGlyph);
                 }
 
                 // check for a kerning offset
@@ -162,7 +162,7 @@ namespace SharpFont
                 // append relevant info to our buffer; we'll do the actual layout later
                 buffer.Add(new BufferEntry
                 {
-                    GlyphData = glyph,
+                    GlyphData = cachedGlyph,
                     Kerning = kerning,
                     Break = breakCategory
                 });
