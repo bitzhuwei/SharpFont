@@ -24,6 +24,7 @@ namespace Test
                     string comparisonFile = Path.Combine(ComparisonPath, c + ".png");
                     Surface surface = RenderGlyph(typeface, (char)c, 32);
                     SaveSurface(surface, comparisonFile);
+                    surface.Dispose();
                 }
             }
         }
